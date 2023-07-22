@@ -17,9 +17,7 @@ def home():
 			return redirect(url_for('thanks'))
 		except:
 			return redirect(url_for('error'))
-
 	return render_template('home.html')
-
 
 @app.route('/error')
 def error():
@@ -29,8 +27,7 @@ def error():
 
 @app.route('/display')
 def display():
-
-	return render_template('display.html', ) # What variables are needed?
+	return render_template('display.html', q= login_session['quote'], n=login_session['name'], a=login_session['age'] ) # What variables are needed?
 
 
 @app.route('/thanks', methods= ['GET', 'POST'])
