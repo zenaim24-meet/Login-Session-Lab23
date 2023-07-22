@@ -4,6 +4,8 @@ from flask import session as login_session
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'super-secret-key'
 
+
+
 @app.route('/', methods= ['GET', 'POST'] ) # What methods are needed?
 def home():
 	if request.method == 'POST':
@@ -11,9 +13,9 @@ def home():
 			quote = request.form['quote']
 			name = request.form['name']
 			age = request.form['age']
-			login_session['quote'] = quote
-			login_session['name'] = name
-			login_session['age'] = age
+			login_session.setdefault('quote', []).append(quote)
+			login_session.setdefault('name', []).append(name)
+			login_session.setdefault('age', []).append(age)
 			return redirect(url_for('thanks'))
 		except:
 			return redirect(url_for('error'))
@@ -27,7 +29,7 @@ def error():
 
 @app.route('/display')
 def display():
-	return render_template('display.html', q= login_session['quote'], n=login_session['name'], a=login_session['age'] ) # What variables are needed?
+	return render_template('display.html', l= login_session) # What variables are needed?
 
 
 @app.route('/thanks', methods= ['GET', 'POST'])
