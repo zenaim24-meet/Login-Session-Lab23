@@ -5,17 +5,20 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'super-secret-key'
 
 
-
 @app.route('/', methods= ['GET', 'POST'] ) # What methods are needed?
 def home():
 	if request.method == 'POST':
 		try:
-			quote = request.form['quote']
+			text = request.form['quote']
 			name = request.form['name']
 			age = request.form['age']
-			login_session.setdefault('quote', []).append(quote)
-			login_session.setdefault('name', []).append(name)
-			login_session.setdefault('age', []).append(age)
+			quote= {'text': text, 'name': name, 'age':age}
+			if 'quotes' not in login_session:
+				login_session['quotes']=[quote]
+			else:
+				quotes= login_session['quotes']
+				quotes.append(quote)
+				login_session['quotes']= quotes
 			return redirect(url_for('thanks'))
 		except:
 			return redirect(url_for('error'))
@@ -29,7 +32,7 @@ def error():
 
 @app.route('/display')
 def display():
-	return render_template('display.html', l= login_session) # What variables are needed?
+	return render_template('display.html', quotes_list= login_session['quotes']) # What variables are needed?
 
 
 @app.route('/thanks', methods= ['GET', 'POST'])

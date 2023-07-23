@@ -6,7 +6,23 @@
 	<title></title>
 </head>
 <body>
-	{{l}}
+	{% if quotes_list %}
+
+<h1>The quotes: </h1>
+
+	{% for quote in quotes_list %} 
+	{{quote[ 'text' ]}}
+	{{quote [ ' name ']}} 
+	{{quote[ 'age' ]}}
+
+	{% endfor %}
+	 {{quotes_list}}
+
+	{% else %}
+
+	<h1>No quotes yet </h1>
+
+	{% endif %}
 
  <a href="/">
  <button>
